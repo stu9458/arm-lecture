@@ -58,6 +58,5 @@ fibonacci:
 	mov r0, #1			@ R0 = 1
 	pop {r4, r5, pc}		@ EPILOG
 	
-	
 	.size fibonacci, .-fibonacci
 	.end
