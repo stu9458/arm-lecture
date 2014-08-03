@@ -32,7 +32,7 @@ fibonacci:
 	ble .L3	  //Jump to .L3
 
 	cmp r4,#1  //if(R4==1)
-	ble .L4	   //Jump to .L4
+	bqe .L4	   //Jump to .L4
 
         //R4 were store the input number. Let R0 be sum number.
         //return fib(x-1)
