@@ -4,6 +4,7 @@
 
 	.equ locked, 1
 	.equ unlocked, 0
+	.equ success, 0
 
 	.global lock_mutex
 	.type lock_mutex, function
@@ -15,7 +16,7 @@ luck_loop:
 	cmp r1,#locked
 	beq luck_loop
 	strex r1,r2,[r0]
-	cmp r1,#0
+	cmp r1,#success
 	bne luck_loop
         @ END CODE INSERT
 	bx lr
