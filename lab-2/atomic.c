@@ -51,7 +51,7 @@ int main(void)
 		i++;
 	}
 
-	pthread_join(tid[0], NULL);
+	pthread_join(tid[0], NULL);//Wait for thread1 finish work
 	pthread_join(tid[1], NULL);
 	// pthread_mutex_destroy(&lock);
 
