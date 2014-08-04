@@ -25,25 +25,27 @@ By Emp 2014/08/01
 fibonacci:
 	@ ADD/MODIFY CODE BELOW
 	@ PROLOG
-	push {r4, r5, lr} //The function use 2 values. LR is R14
+	push {r4, r5, r14} //The function use 2 values. LR is R14
 	
-	mov r4,r0 //R0 is input and sum. Save R4 to R0
-	cmp r4,#0  //if(R4==0)
-	beq .L3	  //Jump to .L3. The change is for "beq(==)" more suit than "ble(<=)" in significance at c-code 
+	subs r4,r0,#0 //r4=r0-0,as cmp,but that save the result at dst.
+	ble .L3	  //Jump to .L3
 
-	cmp r4,#1  //if(R4==1). 
-	beq .L4	   //Jump to .L4. The change is for "beq(==)" more suit than "ble(<=)" in significance at c-code 
+	cmp r4,#1  //if(R4==1),don't need result.
+	beq .L4	   //Jump to .L4
 
         //R4 were store the input number. Let R0 be sum number.
         //return fib(x-1)
-	subs r0,r4,#1
-	bl fibonacci   //if use "b",that just jump.
-
-	mov r5,r0 //The R5 were store R0 number.
-	sub r0,r4,#2  //Use r4 to store input-number into r0 and return(that's x-2).
-	bl fibonacci   
+	sub r0,r4,#1
+	bl fibonacci 
 	
-	@ R0 = R5 + R0 (update flags)
+	//store R5 from r0.
+	mov r5,r0 //The R5 were store R0 number.
+
+	//Do fib(x-2). Let r0=r4-2 and return
+	sub r0,r4,#2  //r0=r4-2
+	bl fibonacci  
+
+	//r0+=r5 and pop to last level.
 	add r0,r0,r5 //return fib(x-1)+fib(x-2)
 	pop {r4, r5, pc}		@EPILOG
 
@@ -57,6 +59,6 @@ fibonacci:
 	//if(x==1)return 1
 	mov r0, #1			@ R0 = 1
 	pop {r4, r5, pc}		@ EPILOG
-	
+
 	.size fibonacci, .-fibonacci
 	.end
